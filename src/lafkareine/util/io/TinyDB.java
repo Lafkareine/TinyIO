@@ -30,6 +30,10 @@ public final class TinyDB {
 		reload();
 	}
 
+	public Path getPath() {
+		return path;
+	}
+
 	public TinyDB(Class base, String name) {
 		this(ResourcePath.getJarPath(base), name);
 	}
@@ -161,7 +165,7 @@ public final class TinyDB {
 
 	public OptionalDouble getDouble(String name) {
 		String value = DB.get(name);
-		return (value != null) ? OptionalDouble.of(Long.parseLong(value)) : OptionalDouble.empty();
+		return (value != null) ? OptionalDouble.of(Double.parseDouble(value)) : OptionalDouble.empty();
 	}
 
 	private String[] getRawArray(String name) {
@@ -179,7 +183,7 @@ public final class TinyDB {
 		return (script != null) ? Arrays.stream(script.split(",")) : null;
 	}
 
-	public Optional<boolean[]> getBooleanArray(String name) {
+	public Optional<boolean[]> getBoolArray(String name) {
 		String[] scripts = getRawArray(name);
 		if (scripts != null) {
 			boolean[] data = new boolean[scripts.length];
@@ -289,7 +293,7 @@ public final class TinyDB {
 		return Short.parseShort(getOrDefault(name, Short.toString(default_value)));
 	}
 
-	public int getIntegerOrDefault(String name, int default_value) {
+	public int getIntOrDefault(String name, int default_value) {
 		return Integer.parseInt(getOrDefault(name, Integer.toString(default_value)));
 	}
 
@@ -316,7 +320,7 @@ public final class TinyDB {
 	}
 
 	public boolean[] getBoolArrayOrDefault(String name, boolean[] default_value) {
-		Optional<boolean[]> optional = getBooleanArray(name);
+		Optional<boolean[]> optional = getBoolArray(name);
 		if (optional.isPresent()) {
 			return optional.get();
 		} else {
@@ -345,7 +349,7 @@ public final class TinyDB {
 		}
 	}
 
-	public int[] getIntegerArrayOrDefault(String name, int[] default_value) {
+	public int[] getIntArrayOrDefault(String name, int[] default_value) {
 		Optional<int[]> optional = getIntArray(name);
 		if (optional.isPresent()) {
 			return optional.get();
